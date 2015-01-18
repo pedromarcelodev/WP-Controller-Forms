@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>WP Controller Forms</title>
+	<link rel="stylesheet" href="">
+	<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+	<script src="wp-controller.min.js" type="text/javascript"></script>
+	<style type="text/css" media="screen">
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+			font-family: calibri;
+			padding-left: 20px;
+		}
+
+		h3 {
+			margin: 0;
+			padding: 0;
+			line-height: normal;
+		}
+
+		h3:last-child{
+			padding-bottom: 10px;
+		}
+
+		form {
+			margin-top: 30px;
+		}
+
+		form input {
+			border-radius: 3px;
+			padding: 8px;
+			margin-bottom: 5px;
+		}
+
+		form input[type="text"] {
+			border: 1px solid #ccc;
+		}
+
+		form input[type="submit"] {
+			background-color: #5656ff;
+			color: #fff;
+			border: 1px solid #3434d5;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<h1>WP Controller Forms</h1>
+		<h3>This is an example of how to use the plug-in</h3>
+		<h3>Este é um exemplo de como se usar o plug-in</h3>
+	</header>
+	<em>Note: This plug-in works in conjunction with the WordPress's action wp_ajax_(action)</em><br>
+	<em>Obs: Este plug-in funciona em conjunto com a action wp_ajax_(action) do WordPress</em>
+	<div id="target"></div>
+	<form action="" method="post" id="myform" accept-charset="utf-8">
+		<input type="text" name="nome" placeholder="Name"><br>
+		<input type="text" name="email" placeholder="E-mail"><br>
+		<input type="submit" value="Send">
+	</form>
+	
+	<script type="text/javascript">
+		(function($){
+			$('#myform').wpController({
+				action: 'my_action', // wp_ajax_(action)
+				url: '#', // Call admin_url('admin-ajax.php');
+				target: '#target', // Element that will receive the response's content
+				before: function(response) { // Called before insert of the content
+					console.log(response);
+				},
+				after: function(response) { // Called after insert of the content
+					console.log(response);
+				}
+			});
+		})(jQuery);
+	</script>
+</body>
+</html>
