@@ -7,7 +7,7 @@
 |	Author: Pedro Marcelo
 |	Author URI: https://github.com/pedromarcelojava
 |	Plugin URI: https://github.com/pedromarcelojava/WP-Controller-Forms
-|	Version: 1.0
+|	Version: 1.2
 */
 
 (function($)
@@ -21,6 +21,9 @@
 				action: '',
 				target: '',
 				url: '',
+				valid_fields: '',
+				valid_fields_function: function(){},
+				valid_fields_error: function(){},
 				before: function(r){},
 				after: function(r){}
 			};
@@ -31,19 +34,29 @@
 
 			this.submit(function(e)
 			{
-				var data = $(this).serialize() + "&action=" + $.wpControllerVars.action
+				var wpc_vars = $.wpControllerVars;
+				var data = $(this).serialize() + "&action=" + wpc_vars.action;
 
-				if ($.wpControllerVars.url.length == 0)
+				var faults = $(this).find(wpc_vars.valid_fields).filter(wpc_vars.valid_fields_function);
+
+				if (faults.length)
 				{
-					$.wpControllerVars.url = $(this).attr('action');
+					wpc_vars.valid_fields_error();
 				}
-
-				$.post($.wpControllerVars.url, data, function(r)
+				else
 				{
-					$.wpControllerVars.before(r);
-					$($.wpControllerVars.target).html(r);
-					$.wpControllerVars.after(r);
-				});
+					if (wpc_vars.url.length == 0)
+					{
+						wpc_vars.url = $(this).attr('action');
+					}
+
+					$.post(wpc_vars.url, data, function(r)
+					{
+						wpc_vars.before(r);
+						$(wpc_vars.target).html(r);
+						wpc_vars.after(r);
+					});
+				}
 
 				e.preventDefault();
 			});
