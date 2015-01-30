@@ -22,7 +22,7 @@
 				target: '',
 				url: '',
 				valid_fields: '',
-				valid_fields_function: function(){},
+				valid_fields_function: function(index, element){},
 				valid_fields_error: function(){},
 				before: function(r){},
 				after: function(r){}
