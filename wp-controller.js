@@ -7,7 +7,7 @@
 |	Author: Pedro Marcelo
 |	Author URI: https://github.com/pedromarcelojava
 |	Plugin URI: https://github.com/pedromarcelojava/WP-Controller-Forms
-|	Version: 1.2
+|	Version: 1.3.1
 */
 
 (function($)
@@ -21,40 +21,51 @@
 				action: '',
 				target: '',
 				url: '',
-				valid_fields: '',
-				valid_fields_function: function(index, element){},
-				valid_fields_error: function(){},
+				validFields: '',
+				validFieldsFunction: function(index, element){},
+				validFieldsError: function(){},
+				beforePost: function(){},
 				before: function(r){},
 				after: function(r){}
 			};
 
 			if (options === undefined) options = {};
 
-			$.wpControllerVars = $.extend({}, defaults, options);
+			if ($.wpControllerVars === undefined)
+			{
+				$.wpControllerVars = {};
+				$.wpControllerVars[this.attr('id')] = $.extend({}, defaults, options);
+			}
+			else
+			{
+				$.wpControllerVars[this.attr('id')] = $.extend({}, defaults, options);
+			}
 
 			this.submit(function(e)
 			{
-				var wpc_vars = $.wpControllerVars;
-				var data = $(this).serialize() + "&action=" + wpc_vars.action;
+				var wpcVars = $.wpControllerVars[$(this).attr('id')];
+				var data = $(this).serialize() + "&action=" + wpcVars.action;
 
-				var faults = $(this).find(wpc_vars.valid_fields).filter(wpc_vars.valid_fields_function);
+				var faults = $(this).find(wpcVars.validFields).filter(wpcVars.validFieldsFunction);
 
 				if (faults.length)
 				{
-					wpc_vars.valid_fields_error();
+					wpcVars.validFieldsError();
 				}
 				else
 				{
-					if (wpc_vars.url.length == 0)
+					if (wpcVars.url.length == 0)
 					{
-						wpc_vars.url = $(this).attr('action');
+						wpcVars.url = $(this).attr('action');
 					}
 
-					$.post(wpc_vars.url, data, function(r)
+					wpcVars.beforePost();
+
+					$.post(wpcVars.url, data, function(r)
 					{
-						wpc_vars.before(r);
-						$(wpc_vars.target).html(r);
-						wpc_vars.after(r);
+						wpcVars.before(r);
+						$(wpcVars.target).html(r);
+						wpcVars.after(r);
 					});
 				}
 
