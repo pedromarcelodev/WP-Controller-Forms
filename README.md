@@ -1,10 +1,13 @@
 # WP Controller Forms
 Request an action wp_ajax_(action) and displays the result<br>
 
+<h2>Parameters</h2>
 <table>
 	<thead>
 		<tr>
-			<th colspan="3"><h1>Parameters</h1></th>
+			<th>Parameter</th>
+			<th>Description</th>
+			<th>Type</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -40,12 +43,12 @@ Request an action wp_ajax_(action) and displays the result<br>
 		</tr>
 		<tr>
 			<td><strong>beforePost()</strong></td>
-			<td>Function that will be executed before the response content insertion</td>
+			<td>Function that will be executed before the method call jQuery.post()</td>
 			<td><em>Function</em></td>
 		</tr>
 		<tr>
 			<td><strong>before(response)</strong></td>
-			<td>Function that will be executed before the method call jQuery.post()</td>
+			<td>Function that will be executed before the response content insertion</td>
 			<td><em>Function</em></td>
 		</tr>
 		<tr>
